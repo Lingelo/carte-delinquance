@@ -27,7 +27,7 @@ export default function NationalStats({ stats, records, indicateur, annee }: Pro
   }, [stats, records, indicateur, annee]);
 
   return (
-    <div className="grid grid-cols-3 gap-3 p-4">
+    <div className="grid grid-cols-1 gap-3 p-4 sm:grid-cols-3">
       <div className="rounded-lg bg-slate-50 p-3 text-center">
         <div className="text-xs font-medium text-slate-500 uppercase">Total national</div>
         <div className="mt-1 text-lg font-bold text-slate-800">{formatNumber(total)}</div>

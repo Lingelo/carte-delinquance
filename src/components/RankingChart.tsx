@@ -27,9 +27,9 @@ export default function RankingChart({ stats, metric }: Props) {
     <div className="p-4">
       <h3 className="mb-2 text-sm font-semibold text-slate-700">Top 10 departements</h3>
       <ResponsiveContainer width="100%" height={280}>
-        <BarChart data={data} layout="vertical" margin={{ left: 120, right: 20, top: 5, bottom: 5 }}>
+        <BarChart data={data} layout="vertical" margin={{ left: 100, right: 10, top: 5, bottom: 5 }}>
           <XAxis type="number" tick={{ fontSize: 11 }} tickFormatter={(v: number) => formatter(v)} />
-          <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} width={110} />
+          <YAxis type="category" dataKey="name" tick={{ fontSize: 10 }} width={95} />
           <Tooltip
             formatter={(value) => [formatter(Number(value)), metric === 'nombre' ? 'Nombre' : 'Taux /1000']}
           />

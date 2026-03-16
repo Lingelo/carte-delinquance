@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import type { FilterState } from './types';
 import { useData, useFilteredStats, useTrendData } from './hooks/useData';
+import { timeAgo } from './utils/format';
 import Controls from './components/Controls';
 import MapView from './components/MapView';
 import Legend from './components/Legend';
@@ -8,9 +9,10 @@ import NationalStats from './components/NationalStats';
 import RankingChart from './components/RankingChart';
 import TrendChart from './components/TrendChart';
 import DepartmentDetail from './components/DepartmentDetail';
+import AboutModal from './components/AboutModal';
 
 export default function App() {
-  const { records, geojson, loading, error, indicators, years } = useData();
+  const { records, geojson, loading, error, indicators, years, generatedAt } = useData();
 
   const [filters, setFilters] = useState<FilterState>({
     indicateur: '',
@@ -18,6 +20,7 @@ export default function App() {
     metric: 'taux',
   });
   const [selectedDept, setSelectedDept] = useState<string | null>(null);
+  const [showAbout, setShowAbout] = useState(false);
 
   const activeFilters = useMemo<FilterState>(
     () => ({
@@ -65,7 +68,15 @@ export default function App() {
   return (
     <div className="flex h-screen flex-col">
       <header className="border-b border-slate-200 bg-slate-800 px-6 py-3">
-        <h1 className="text-lg font-bold text-white">Carte de la Delinquance en France</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-bold text-white">Carte de la Delinquance en France</h1>
+          <div className="flex items-center gap-3 text-xs text-slate-400">
+            {generatedAt && <span>{timeAgo(generatedAt)}</span>}
+            <button onClick={() => setShowAbout(true)} className="underline hover:text-white">
+              A propos
+            </button>
+          </div>
+        </div>
       </header>
 
       <Controls
@@ -75,9 +86,9 @@ export default function App() {
         onChange={handleFilterChange}
       />
 
-      <div className="flex min-h-0 flex-1">
-        {/* Left: Map 60% */}
-        <div className="relative w-3/5 border-r border-slate-200">
+      <div className="flex min-h-0 flex-1 flex-col md:flex-row">
+        {/* Left: Map */}
+        <div className="relative h-[50vh] w-full shrink-0 md:h-auto md:w-3/5 md:border-r md:border-slate-200">
           {geojson && (
             <MapView
               geojson={geojson}
@@ -90,8 +101,8 @@ export default function App() {
           <Legend stats={stats} metric={activeFilters.metric} />
         </div>
 
-        {/* Right: Dashboard 40% */}
-        <div className="w-2/5 overflow-y-auto bg-white">
+        {/* Right: Dashboard */}
+        <div className="w-full overflow-y-auto bg-white md:w-2/5">
           <NationalStats
             stats={stats}
             records={records}
@@ -133,6 +144,13 @@ export default function App() {
           )}
         </div>
       </div>
+
+      {showAbout && (
+        <AboutModal
+          onClose={() => setShowAbout(false)}
+          lastUpdate={generatedAt ?? undefined}
+        />
+      )}
     </div>
   );
 }

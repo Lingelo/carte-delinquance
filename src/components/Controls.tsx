@@ -9,11 +9,11 @@ interface Props {
 
 export default function Controls({ indicators, years, filters, onChange }: Props) {
   return (
-    <div className="flex flex-wrap items-center gap-3 p-4 bg-white border-b border-slate-200">
-      <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+    <div className="flex flex-wrap items-center gap-2 p-3 bg-white border-b border-slate-200 md:gap-3 md:p-4">
+      <label className="flex w-full items-center gap-2 text-sm font-medium text-slate-700 sm:w-auto">
         Indicateur
         <select
-          className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 shadow-sm focus:border-slate-500 focus:outline-none"
+          className="min-w-0 flex-1 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 shadow-sm focus:border-slate-500 focus:outline-none sm:flex-none"
           value={filters.indicateur}
           onChange={(e) => onChange({ indicateur: e.target.value })}
         >
@@ -25,10 +25,10 @@ export default function Controls({ indicators, years, filters, onChange }: Props
         </select>
       </label>
 
-      <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+      <label className="flex w-full items-center gap-2 text-sm font-medium text-slate-700 sm:w-auto">
         Annee
         <select
-          className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 shadow-sm focus:border-slate-500 focus:outline-none"
+          className="min-w-0 flex-1 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 shadow-sm focus:border-slate-500 focus:outline-none sm:flex-none"
           value={filters.annee}
           onChange={(e) => onChange({ annee: Number(e.target.value) })}
         >

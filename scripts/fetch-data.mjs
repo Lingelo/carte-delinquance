@@ -91,9 +91,13 @@ async function main() {
 
   const [records, geojson] = await Promise.all([fetchCSV(), fetchGeoJSON()]);
 
+  const wrapped = {
+    meta: { generatedAt: new Date().toISOString() },
+    records,
+  };
   const jsonPath = join(OUT_DIR, 'delinquance.json');
-  writeFileSync(jsonPath, JSON.stringify(records));
-  console.log(`Wrote ${jsonPath} (${(JSON.stringify(records).length / 1024 / 1024).toFixed(1)} MB)`);
+  writeFileSync(jsonPath, JSON.stringify(wrapped));
+  console.log(`Wrote ${jsonPath} (${(JSON.stringify(wrapped).length / 1024 / 1024).toFixed(1)} MB)`);
 
   const geoPath = join(OUT_DIR, 'departements.geojson');
   writeFileSync(geoPath, JSON.stringify(geojson));

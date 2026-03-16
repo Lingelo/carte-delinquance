@@ -6,6 +6,7 @@ const BASE = import.meta.env.BASE_URL;
 export function useData() {
   const [records, setRecords] = useState<DelinquanceRecord[]>([]);
   const [geojson, setGeojson] = useState<DepartementGeoJSON | null>(null);
+  const [generatedAt, setGeneratedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,7 +23,13 @@ export function useData() {
       }),
     ])
       .then(([data, geo]) => {
-        setRecords(data as DelinquanceRecord[]);
+        // Support both wrapped { meta, records } and raw array formats
+        if (Array.isArray(data)) {
+          setRecords(data as DelinquanceRecord[]);
+        } else {
+          setRecords(data.records as DelinquanceRecord[]);
+          if (data.meta?.generatedAt) setGeneratedAt(data.meta.generatedAt);
+        }
         setGeojson(geo as DepartementGeoJSON);
         setLoading(false);
       })
@@ -47,7 +54,7 @@ export function useData() {
     return [...set].sort();
   }, [records]);
 
-  return { records, geojson, loading, error, indicators, years };
+  return { records, geojson, loading, error, indicators, years, generatedAt };
 }
 
 export function useFilteredStats(
