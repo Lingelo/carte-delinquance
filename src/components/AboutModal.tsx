@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { timeAgo } from '../utils/format';
 
 interface Props {
@@ -6,9 +7,9 @@ interface Props {
 }
 
 export default function AboutModal({ onClose, lastUpdate }: Props) {
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 p-4"
       onClick={onClose}
     >
       <div
@@ -52,6 +53,7 @@ export default function AboutModal({ onClose, lastUpdate }: Props) {
           Fermer
         </button>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
